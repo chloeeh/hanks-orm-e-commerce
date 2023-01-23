@@ -22,6 +22,7 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Category and Tag data
   try {
       const productData = await Product.findByPk(req.params.id, { include: ({ model: Category }, { model: Tag }) });
+      // If there is no product data, send message to user
       if (!productData) {
           res.status(404).json({ message: 'No product found with this id!' });
           return;
@@ -34,7 +35,8 @@ router.get('/:id', async (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
+  /* req.body should look like this... Make sure to copy this and put into Insomnia for POST new product method
+      make sure to format it it appropriately for JSON (i.e. put quotation marks around product_name, price, stock, tagIds)
     {
       product_name: "Basketball",
       price: 200.00,
@@ -44,7 +46,7 @@ router.post('/', (req, res) => {
   */
   Product.create(req.body)
     .then((product) => {
-      // if there's product tags, we need to create pairings to bulk create in the ProductTag model
+      // if there are product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
@@ -114,7 +116,7 @@ router.delete('/:id', async (req, res) => {
               id: req.params.id,
           },
       });
-
+      // If there is no product data, send message to user
       if (!productData) {
           res.status(404).json({ message: 'No product found with this id!' });
           return;

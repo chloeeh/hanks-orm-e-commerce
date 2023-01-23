@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Product data
   try {
       const tagData = await Tag.findByPk(req.params.id, { include: Product });
-
+        // If there is no tag data, send message to user
       if (!tagData) {
           res.status(404).json({ message: 'No Tag by this id!' });
           return;
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res) => {
               id: req.params.id,
           },
       });
-
+      // If there is no tag data, send message to user
       if (!tagData) {
           res.status(404).json({ message: 'No Tag by this id!' });
           return;
