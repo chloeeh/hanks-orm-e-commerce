@@ -19,10 +19,11 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Products
   try {
     const categoryData = await Category.findByPk(req.params.id, { include: Product });
+    // If there is no category data, send message to user
     if (!categoryData) {
         res.status(404).json({ message: 'No Category by this id!' });
         return;
-    }
+    } 
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -48,7 +49,7 @@ router.put('/:id', async (req, res) => {
             id: req.params.id,
         },
     });
-
+    // If there is no category data, send message to user
     if (!categoryData) {
         res.status(404).json({ message: 'No Category by this id!' });
         return;
@@ -67,7 +68,7 @@ router.delete('/:id', async (req, res) => {
             id: req.params.id,
         },
     });
-
+    // If there is no category data, send message to user
     if (!categoryData) {
         res.status(404).json({ message: 'no Category found with this id!' });
         return;
@@ -79,4 +80,5 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Export as a module to be used elsewhere
 module.exports = router;
